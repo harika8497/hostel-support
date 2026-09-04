@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<h1>Reports</h1>
+<p class="subtitle"><a href="{{ url_for('staff_logout') }}">log out</a></p>
+
+<table class="report-table">
+    <thead>
+        <tr>
+            <th>Flag</th>
+            <th>Passcode</th>
+            <th>Mode</th>
+            <th>Preview</th>
+            <th>Status</th>
+            <th>Submitted</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reports %}
+        <tr class="{{ 'flagged-row' if r.flagged else '' }}">
+            <td>{% if r.flagged %}<span class="flag-dot"></span>{% endif %}</td>
+            <td><a href="{{ url_for('report_detail', report_id=r.id) }}">{{ r.passcode }}</a></td>
+            <td>{{ r.mode }}</td>
+            <td>{{ r.message[:60] }}{% if r.message|length > 60 %}...{% endif %}</td>
+            <td><span class="badge badge-{{ r.status }}">{{ r.status.replace('_',' ') }}</span></td>
+            <td>{{ r.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

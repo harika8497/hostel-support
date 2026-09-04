@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Report detail{% endblock %}
+{% block content %}
+
+<p><a href="{{ url_for('dashboard') }}">&larr; back to dashboard</a></p>
+
+<h1>Report {{ report.passcode }} {% if report.flagged %}<span class="flag-dot"></span> flagged{% endif %}</h1>
+
+{% if report.mode == 'resolve' %}
+<div class="card">
+    <p class="hint">Identifying details (visible to staff only):</p>
+    <p>Name: {{ report.name or 'not given' }} &middot; Branch: {{ report.branch or '—' }} &middot; Year: {{ report.year or '—' }} &middot; Block: {{ report.hostel_block or '—' }}</p>
+</div>
+{% else %}
+<p class="hint">This student chose "just venting" mode — no identifying info was collected.</p>
+{% endif %}
+
+<div class="thread">
+    <div class="bubble bubble-student">
+        <div class="bubble-label">Student (original report)</div>
+        {{ report.message }}
+    </div>
+    {% for r in replies %}
+        <div class="bubble bubble-{{ r.sender }}">
+            <div class="bubble-label">{{ 'Student' if r.sender == 'student' else 'You (staff)' }}</div>
+            {{ r.message }}
+        </div>
+    {% endfor %}
+</div>
+
+<form action="{{ url_for('report_detail', report_id=report.id) }}" method="POST" class="card">
+    <label for="message">Reply to student</label>
+    <textarea name="message" id="message" rows="3" placeholder="Write a reply..."></textarea>
+
+    <label for="status">Update status</label>
+    <select name="status" id="status">
+        <option value="pending" {{ 'selected' if report.status=='pending' }}>Pending</option>
+        <option value="in_progress" {{ 'selected' if report.status=='in_progress' }}>In progress</option>
+        <option value="resolved" {{ 'selected' if report.status=='resolved' }}>Resolved</option>
+    </select>
+
+    <button type="submit" class="btn-primary">Save</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Your passcode{% endblock %}
+{% block content %}
+
+<div class="card center">
+    <p class="subtitle">Your report has been submitted. Save this passcode — it's the only way to check for a reply.</p>
+    <div class="passcode-box">{{ passcode }}</div>
+    <p class="hint">We can't recover this if you lose it, since we don't store anything that links it back to you. Screenshot it or write it down.</p>
+    <a href="{{ url_for('thread', passcode=passcode) }}" class="btn-primary">Continue to conversation</a>
+</div>
+
+{% endblock %}

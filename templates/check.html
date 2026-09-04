@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Check for a reply{% endblock %}
+{% block content %}
+
+<h1>Check for a reply</h1>
+<p class="subtitle">Enter the passcode you got when you submitted your report.</p>
+
+<form action="{{ url_for('check') }}" method="POST" class="card">
+    <input type="text" name="passcode" placeholder="e.g. A1B2C3D4" required maxlength="8" style="text-transform:uppercase">
+    <button type="submit" class="btn-primary">View conversation</button>
+</form>
+
+{% endblock %}

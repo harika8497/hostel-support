@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+
+<h1>Your conversation</h1>
+<p class="subtitle">Passcode: <strong>{{ report.passcode }}</strong> &middot; Status:
+    <span class="badge badge-{{ report.status }}">{{ report.status.replace('_',' ') }}</span>
+</p>
+
+<div class="thread">
+    <div class="bubble bubble-student">
+        <div class="bubble-label">You (original report)</div>
+        {{ report.message }}
+    </div>
+
+    {% for r in replies %}
+        <div class="bubble bubble-{{ r.sender }}">
+            <div class="bubble-label">{{ 'You' if r.sender == 'student' else 'Counselor / Warden' }}</div>
+            {{ r.message }}
+        </div>
+    {% endfor %}
+</div>
+
+<form action="{{ url_for('thread', passcode=report.passcode) }}" method="POST" class="card">
+    <label for="message">Add to the conversation</label>
+    <textarea name="message" id="message" rows="3" placeholder="Reply, add detail, or ask a question..."></textarea>
+    <button type="submit" class="btn-primary">Send</button>
+</form>
+
+{% endblock %}

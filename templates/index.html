@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}quietline — say it, anonymously{% endblock %}
+{% block content %}
+
+<h1>Say what's happening. No name attached.</h1>
+<p class="subtitle">Type it out. Get a passcode instead of a login. Come back anytime and check for a reply — still anonymous.</p>
+
+<form action="{{ url_for('submit') }}" method="POST" class="card">
+
+    <div class="mode-toggle">
+        <label class="mode-option">
+            <input type="radio" name="mode" value="vent" checked onclick="toggleResolveFields()">
+            <span><strong>Just venting</strong><br><small>Nothing tied to me. No action needed, just want it heard.</small></span>
+        </label>
+        <label class="mode-option">
+            <input type="radio" name="mode" value="resolve" onclick="toggleResolveFields()">
+            <span><strong>I want this resolved</strong><br><small>I'm okay sharing a few basic details so staff can actually look into it.</small></span>
+        </label>
+    </div>
+
+    <label for="message">What's going on?</label>
+    <textarea name="message" id="message" rows="6" placeholder="Take your time. Write it however it comes out." required></textarea>
+
+    <div id="resolveFields" style="display:none;">
+        <p class="hint">These fields are only visible to the warden/counselor — never to other students.</p>
+        <div class="grid">
+            <input type="text" name="name" placeholder="Name (optional)">
+            <input type="text" name="branch" placeholder="Branch">
+            <input type="text" name="year" placeholder="Year">
+            <input type="text" name="hostel_block" placeholder="Hostel block / room">
+        </div>
+    </div>
+
+    <button type="submit" class="btn-primary">Submit anonymously</button>
+</form>
+
+<script>
+function toggleResolveFields() {
+    const resolve = document.querySelector('input[name="mode"][value="resolve"]').checked;
+    document.getElementById('resolveFields').style.display = resolve ? 'block' : 'none';
+}
+</script>
+
+{% endblock %}
