@@ -13,15 +13,13 @@ app.secret_key = os.getenv("SECRET_KEY")
 # ---------------------------------------------------------
 # DATABASE CONFIG — edit these to match your local MySQL setup
 # ---------------------------------------------------------
-DB_CONFIG = {
-    "host": os.getenv("DB_HOST"),
-    "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD"),
-    "database": os.getenv("DB_NAME")
-}
-
 def get_db():
-    return mysql.connector.connect(**DB_CONFIG)
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
 
 # ---------------------------------------------------------
 # Simple keyword-based flagging.
