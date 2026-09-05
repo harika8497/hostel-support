@@ -2,18 +2,22 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import mysql.connector
 import secrets
 import string
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "change-this-secret-key-before-demo"
+app.secret_key = os.getenv("SECRET_KEY")
 
 # ---------------------------------------------------------
 # DATABASE CONFIG — edit these to match your local MySQL setup
 # ---------------------------------------------------------
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Harii@2006",   # <-- change this
-    "database": "hostel_support"
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME")
 }
 
 def get_db():
@@ -116,7 +120,7 @@ def thread(passcode):
 # Staff-facing routes (counselor / warden side)
 # ---------------------------------------------------------
 
-STAFF_PASSWORD = "warden123"  # demo-only, hardcoded on purpose for the prototype
+STAFF_PASSWORD = os.getenv("STAFF_PASSWORD")  # demo-only, hardcoded on purpose for the prototype
 
 def require_staff():
     return session.get('staff', False)
